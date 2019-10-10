@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:alpine
+    restart: always
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./static:/static
+      - ./media:/media
+    ports:
+      - 80:80
+  database:
+    image: postgres:11.4-alpine
+    ports:
+      - 5433:5432
+    volumes:
+      - database:/var/lib/postgresql/data/
+    env_file:
+      - .env
+  web:
+    image: drf-boilerplate:latest
+    restart: on-failure
+    command: gunicorn --error-logfile /var/log/gunicorn-error-log --bind 0.0.0.0:8080 blog.wsgi
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+      - nginx
+    entrypoint: /entrypoint.sh
+    env_file:
+      - .env
+    links:
+      - database
+volumes:
+  database:

@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  database:
+    image: postgres:11.4-alpine
+    volumes:
+      - database:/var/lib/postgresql/data/
+    ports:
+      - 5433:5432
+    env_file:
+      - .env
+  web:
+    image: drf-boilerplate:latest
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - 80:8000
+    depends_on:
+      - database
+    entrypoint: /entrypoint.sh
+    env_file:
+      - .env
+    links:
+      - database
+volumes:
+  database:

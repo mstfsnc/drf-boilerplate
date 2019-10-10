@@ -1,0 +1,11 @@
+node_modules
+venv
+media/*
+!media/.keep 
+static/*
+!static/.keep 
+.vscode
+.env
+__pycache__/
+*.py[cod]
+.env
