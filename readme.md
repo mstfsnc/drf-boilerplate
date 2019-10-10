@@ -15,13 +15,12 @@ make bundle && make build
 ```
 
 ### Çalıştırma
-Geliştirme ortamı
+Geliştirme ortamı (attach)
 ```
-make up 
+make development 
 ```
 
 Canlı ortam (nginx)
 ```
-cp .env.example .env
-make bundle && make build
+make production 
 ```
